@@ -1,0 +1,407 @@
+﻿@{
+    Page.Title = "Calculus";
+ }
+  <p>
+    This page helps you find the first derivative of Trignometic Functions, by @ViewBag.Author
+</p>
+
+ <form action="" class="inputField">
+
+        Enter the trignometic function as follows:<h5><b>Legend: a(sin <sup>n</sup> (bx+c)) + d</b></h5>
+        @*<br />
+        Enter the Coefficient (The value of a):
+        <br />*@
+        <input id="Coeff" name="Coeff" type="text" value="" />
+        <span id="CoeffError" class="error"></span>
+        @*<br />
+        <br />
+        Enter the function (Use sin for sine, cos for cosine, etc.): 
+        <br /> *@     
+        <input id="Function" name="Function" type="text" value=""/>
+        <span id="FunctionError" class="error"></span>
+@*        <br />
+        <br />
+        <!--Enter the degree (The value of n):-->
+        <br />*@
+        <sup class="supInput"><input id="Degree" name="Degree" type="text" value="" /></sup>
+        <span id="DegreeError" class="error"></span>
+        @*<br />
+        <br />
+        Enter the Coefficient of Variable (The value of b):
+        <br />*@
+        <input id="Xcoeff" name="Xcoeff" type="text" value="" />
+        <span id="XcoeffError" class="error"></span>
+        @*<br />
+        <br />
+        Enter the Constant (The value of d):
+        <br />*@
+        <input id="Constant" name="Constant" type="text" value="" />
+        <span id="ConstantError" class="error"></span>
+        @*<br />
+        <br />
+        Enter the Constant next to X (The value of c):
+        <br />*@
+        <input id="Xconstant" name="Xconstant" type="text" value="" />
+        <span id="XconstantError" class="error"></span>
+       @* <br />
+        <br />*@
+        <input name="Submit" type="button" onclick="validateInput();" value = "Evaluate"/> 
+        <br /><br />  
+        <textarea rows="3" cols="10" readonly="readonly"></textarea>
+        <br /><br />      
+</form>
+
+<script type="text/javascript">
+     
+     function validateInput() {
+         var isValid = true;
+         document.getElementById('CoeffError').innerText = '';
+         document.getElementById('FunctionError').innerText = '';
+         document.getElementById('DegreeError').innerText = '';
+         document.getElementById('XcoeffError').innerText = '';
+         document.getElementById('ConstantError').innerText = '';
+         document.getElementById('XconstantError').innerText = '';
+
+         var a = document.getElementById("Coeff").value;
+         var func = document.getElementById("Function").value;
+         var b = document.getElementById("Xcoeff").value;
+         var c = document.getElementById("Xconstant").value;
+         var d = document.getElementById("Constant").value;
+         var n = document.getElementById("Degree").value;
+
+         if (a.length == 0) {
+             alert("Enter a valid Coefficient (a value)!");
+             isValid = false;
+             return isValid;
+         }
+         else if (func.length == 0) {
+             alert("Enter a valid trignometry function!");
+             isValid = false;
+             return isValid;
+         }
+         else if (n.length == 0) {
+             alert("Enter a valid Degree (n value)!");
+             isValid = false;
+             return isValid;
+         }
+         else if (b.length == 0) {
+             alert("Enter a valid X-coefficient (b value)!");
+             isValid = false;
+             return isValid;
+         }
+         else if (d.length == 0) {
+             alert("Enter a valid Constant (d value)!");
+             isValid = false;
+             return isValid;
+         }
+         else if (c.length == 0) {
+             alert("Enter a valid X-constant (c value)!");
+             isValid = false;
+             return isValid;
+         }
+         else {
+             if (a != 0) {
+                 if (n == -1) {
+                     return inverseDerivative(a, func, b, c, d);
+                 }
+                 else if (n == 0) {
+                     document.write("0");
+                 }
+                 else {
+                     return simpleDerivative(a, func, b, c, d, n);
+                 }
+             }
+             else {
+                 document.write(" 0 ");
+             }
+
+         }
+        
+     }
+
+     function inverseDerivative(a,func,b,c,d) {
+
+            switch(func){
+                case "sin":
+                     document.write("(" + a * b + ")/(sqrt( 1 - (" + b + "x + " + c + ")^2)");
+                     break;
+                 
+                case "cos":
+                 
+                     document.write("(" + -1 * a * b + ")/(sqrt( 1 - (" + b + "x + " + c + ")^2)");
+                     break;
+                 
+             case "tan":
+                 
+                     document.write("(" + a * b + ")/(1 + (" + b + "x + " + c + ")^2)");
+                     break;
+                 
+             case "cot":
+                 
+                     document.write("(" + -1 * a * b + ")/( 1 + (" + b + "x + " + c + ")^2)");
+                     break;
+                 
+             case "sec":
+                 
+                     document.write("(" + a * b + ")/(abs(" + b + "x" + c + ") *sqrt( (" + b + "x + " + c + ")^2) - 1");
+                     break;
+                 
+             case "csc":
+                     document.write("(" + -1 * a * b + ")/(abs(" + b + "x" + c + ") *sqrt( (" + b + "x + " + c + ")^2) - 1");
+                     break;
+                 
+             default:
+                    document.write("Please enter the valid trignometric function");
+                
+         }
+        
+     }
+     function simpleDerivative(a, func, b, c, d, n) {
+
+//         var a = document.getElementById("Coeff").value;
+//         var func = document.getElementById("Function").value;
+//         var b = document.getElementById("Xcoeff").value;
+//         var c = document.getElementById("Xconstant").value;
+//         var d = document.getElementById("Constant").value;
+//         var n = document.getElementById("Degree").value;
+         
+             if ((a == 1) && (b == 1) && (c == 0) && ( d == 0)) {
+                 if (func == "sin") {
+                      document.write("The First Derivative of " + func + "(x) is cos(x)");
+                 }
+                 else if (func == "cos") {
+                     document.write("The First Derivative of " + func + "(x) is -sin(x)");
+                 }
+                 else if (func == "tan") {
+                     document.write("The First Derivative of " + func + "(x) is (sec(x))^2");
+                 }
+                 else if (func == "cot") {
+                     document.write("The First Derivative of " + func + "(x) is -(csc(x))^2");
+                 }
+                 else if (func == "sec") {
+                     document.write("The First Derivative of " + func + "(x) is sec(x)*tan(x)");
+                 }
+                 else if (func == "csc") {
+                     document.write("The First Derivative of " + func + "(x) is -csc(x)*cot(x)");
+                 }
+                 else {
+                     document.write("You entered invalid trignometric function");
+                 }
+             }
+             else if ((a == 1) && (b == 1) && (c != 0) && (d != 0)) {
+                 if (func == "sin") {
+                     document.write("The First Derivative of " + func + "( x + " + c + " ) + "  + d + " is cos( x +" + c + ")" );
+                 }
+                 else if (func == "cos") {
+                     document.write("The First Derivative of " + func + "(x + " + c + " ) + " + d + " is -sin(x +" + c + ")");
+                 }
+                 else if (func == "tan") {
+                     document.write("The First Derivative of " + func + "(x + " + c + " ) + " + d + " is (sec(x +" + c + ")^2");
+                 }
+                 else if (func == "cot") {
+                     document.write("The First Derivative of " + func + "(x + " + c + " ) + " + d + " is -(csc(x +" + c + ")^2");
+                 }
+                 else if (func == "sec") {
+                     document.write("The First Derivative of " + func + "(x + " + c + " ) + " + d + " is sec(x +" + c + ") * tan(x +" + c + ")");
+                 }
+                 else if (func == "csc") {
+                     document.write("The First Derivative of " + func + "(x + " + c + " ) + " + d + " is -csc(x +" + c + ") * cot(x +" + c + ")");
+                 }
+                 else {
+                     document.write("You entered invalid trignometric function");
+                 }
+             }
+             else if ((a != 1) && (b == 1) && (c == 0) && (d == 0)) {
+                 if (func == "sin") {
+                     document.write("The First Derivative of " + a + func + "(x) is " + a + " cos(x)");
+                 }
+                 else if (func == "cos") {
+                     document.write("The First Derivative of " + a + func + "(x) is -" + a + " sin(x)");
+                 }
+                 else if (func == "tan") {
+                     document.write("The First Derivative of " + a + func + "(x) is " + a + " (sec(x))^2");
+                 }
+                 else if (func == "cot") {
+                     document.write("The First Derivative of " + a + func + "(x) is -" + a + " (csc(x))^2");
+                 }
+                 else if (func == "sec") {
+                     document.write("The First Derivative of " + a + func + "(x) is " + a + " sec(x)*tan(x)");
+                 }
+                 else if (func == "csc") {
+                     document.write("The First Derivative of " + a + func + "(x) is -" + a + " csc(x)*cot(x)");
+                 }
+                 else {
+                     document.write("You entered invalid trignometric function");
+                 }
+             }
+             else if ((a == 1) && (b != 1) && (c == 0) && (d == 0)) {
+                 if (func == "sin") {
+                     document.write("The First Derivative of " + func + "(" + b + "x) is " + b + " cos(x)");
+                 }
+                 else if (func == "cos") {
+                     document.write("The First Derivative of " + func + "(" + b + "x) is -" + b + " sin(x)");
+                 }
+                 else if (func == "tan") {
+                     document.write("The First Derivative of " + func + "(" + b + "x) is " + b + " (sec(x))^2");
+                 }
+                 else if (func == "cot") {
+                     document.write("The First Derivative of " + func + "(" + b + "x) is -" + b + " (csc(x))^2");
+                 }
+                 else if (func == "sec") {
+                     document.write("The First Derivative of " + func + "(" + b + "x) is " + b + " sec(x)*tan(x)");
+                 }
+                 else if (func == "csc") {
+                     document.write("The First Derivative of " + func + "(" + b + "x) is -" + b + "csc(x)*cot(x)");
+                 }
+                 else {
+                     document.write("You entered invalid trignometric function");
+                 }
+             }
+             else if ((a == 1) && (b == 1) && (c == 0) && (d == 0)) {
+                 if (func == "sin") {
+                     document.write("The First Derivative of (" + func + "(x))^" + n + " is " + n + "(" + func + "(x))^" + (n - 1) + " cos(x)");
+                 }
+                 else if (func == "cos") {
+                     document.write("The First Derivative of (" + func + "(x))^" + n + " is -" + n + "(" + func + "(x))^" + (n - 1) + " sin(x)");
+                 }
+                 else if (func == "tan") {
+                     document.write("The First Derivative of (" + func + "(x))^" + n + " is " + n + "(" + func + "(x))^" + (n - 1) + " (sec(x))^2");
+                 }
+                 else if (func == "cot") {
+                     document.write("The First Derivative of (" + func + "(x))^" + n + " is -" + n + "(" + func + "(x))^" + (n - 1) + " (csc(x))^2");
+                 }
+                 else if (func == "sec") {
+                     document.write("The First Derivative of (" + func + "(x))^" + n + " is " + n + "(" + func + "(x))^" + n + " *tan(x)");
+                 }
+                 else if (func == "csc") {
+                     document.write("The First Derivative of (" + func + "(x))^" + n + " is -" + n + "(" + func + "(x))^" + n + " *cot(x)");
+                 }
+                 else {
+                     document.write("You entered invalid trignometric function");
+                 }
+             }
+             else if ((a != 1) && (b != 1) && (c == 0) && (d == 0)) {
+                 if (func == "sin") {
+                     document.write("The First Derivative of " + a + "(" + func + "(" + b + "x))^" + n + " is " + a * n * b + "(" + func + "(" + b + "x))^" + (n - 1) + " cos(" + b + "x)");
+                 }
+                 else if (func == "cos") {
+                     document.write("The First Derivative of " + a + "(" + func + "(" + b + "x))^" + n + " is -" + a * n * b + "(" + func + "(" + b + "x))^" + (n - 1) + " sin(" + b + "x)");
+                 }
+                 else if (func == "tan") {
+                     document.write("The First Derivative of " + a + "(" + func + "(" + b + "x))^" + n + " is " + a * n * b + "(" + func + "(" + b + "x))^" + (n - 1) + " (sec(" + b + "x))^2");
+                 }
+                 else if (func == "cot") {
+                     document.write("The First Derivative of " + a + "(" + func + "(" + b + "x))^" + n + " is -" + a * n * b + "(" + func + "(" + b + "x))^" + (n - 1) + " (csc(" + b + "x))^2");
+                 }
+                 else if (func == "sec") {
+                     document.write("The First Derivative of " + a + "(" + func + "(" + b + "x))^" + n + " is " + a * n * b + "(" + func + "(" + b + "x))^" + n + " *tan(" + b + "x)");
+                 }
+                 else if (func == "csc") {
+                     document.write("The First Derivative of " + a + "(" + func + "(" + b + "x))^" + n + " is " + a * n * b + "(" + func + "(" + b + "x))^" + n + " *cot(" + b + "x)");
+                 }
+                 else {
+                     document.write("You entered invalid trignometric function");
+                 }
+             }
+             else if ((a != 1) && (b == 1) && (c == 0) && (d == 0)) {
+                 if (func == "sin") {
+                     document.write("The First Derivative of " + a + "(" + func + "(x))^" + n + " is " + a * n + "(" + func + "(x))^" + (n - 1) + " cos(x)");
+                 }
+                 else if (func == "cos") {
+                     document.write("The First Derivative of " + a + "(" + func + "(x))^" + n + " is -" + a * n + "(" + func + "(x))^" + (n - 1) + " sin(x)");
+                 }
+                 else if (func == "tan") {
+                     document.write("The First Derivative of " + a + "(" + func + "(x))^" + n + " is " + a * n + "(" + func + "(x))^" + (n - 1) + " (sec(x))^2");
+                 }
+                 else if (func == "cot") {
+                     document.write("The First Derivative of " + a + "(" + func + "(x))^" + n + " is -" + a * n + "(" + func + "(x))^" + (n - 1) + " (csc(x))^2");
+                 }
+                 else if (func == "sec") {
+                     document.write("The First Derivative of " + a + "(" + func + "(x))^" + n + " is " + a * n + "(" + func + "(x))^" + n + " *tan(x)");
+                 }
+                 else if (func == "csc") {
+                     document.write("The First Derivative of " + a + "(" + func + "(x))^" + n + " is " + a * n + "(" + func + "(x))^" + n + " *cot(x)");
+                 }
+                 else {
+                     document.write("You entered invalid trignometric function");
+                 }
+             }
+             else if ((a != 1) && (b != 1) && (c == 0) && (d == 0)) {
+                 if (func == "sin") {
+                     document.write("The First Derivative of " + a + func + "(" + b + "x) is " + a * b + "cos(" + b + "x)");
+                 }
+                 else if (func == "cos") {
+                     document.write("The First Derivative of " + a + func + "(" + b + "x) is -" + a * b + " sin(" + b + "x)");
+                 }
+                 else if (func == "tan") {
+                     document.write("The First Derivative of " + a + func + "(" + b + "x) is " + a * b + " (sec(" + b + "x))^2");
+                 }
+                 else if (func == "cot") {
+                     document.write("The First Derivative of " + a + func + "(" + b + "x) is -" + a * b + " (csc(" + b + "x))^2");
+                 }
+                 else if (func == "sec") {
+                     document.write("The First Derivative of " + a + func + "(" + b + "x) is " + a * b + "sec(" + b + "x)*tan(" + b + "x)");
+                 }
+                 else if (func == "csc") {
+                     document.write("The First Derivative of " + a + func + "(" + b + "x) is -" + a * b + "csc(" + b + "x)*cot(" + b + "x)");
+                 }
+                 else {
+                     document.write("You entered invalid trignometric function");
+                 }
+             }
+             else if ((a == 1) && (b != 1) && (c == 0) && (d == 0)) {
+                 if (func == "sin") {
+                     document.write("The First Derivative of (" + func + "(" + b + "x))^" + n + " is " + n * b + "(" + func + "(" + b + "x))^" + (n - 1) + " cos(" + b + "x)");
+                 }
+                 else if (func == "cos") {
+                     document.write("The First Derivative of (" + func + "(" + b + "x))^" + n + " is -" + n * b + "(" + func + "(" + b + "x))^" + (n - 1) + " sin(" + b + "x)");
+                 }
+                 else if (func == "tan") {
+                     document.write("The First Derivative of (" + func + "(" + b + "x))^" + n + " is " + n * b + "(" + func + "(" + b + "x))^" + (n - 1) + " (sec(" + b + "x))^2");
+                 }
+                 else if (func == "cot") {
+                     document.write("The First Derivative of (" + func + "(" + b + "x))^" + n + " is -" + n * b + "(" + func + "(" + b + "x))^" + (n - 1) + " (csc(" + b + "x))^2");
+                 }
+                 else if (func == "sec") {
+                     document.write("The First Derivative of (" + func + "(" + b + "x))^" + n + " is " + n * b + "(" + func + "(" + b + "x))^" + n + " *tan(" + b + "x)");
+                 }
+                 else if (func == "csc") {
+                     document.write("The First Derivative of (" + func + "(" + b + "x))^" + n + " is -" + n * b + "(" + func + "(" + b + "x))^" + n + " *cot(" + b + "x)");
+                 }
+                 else {
+                     document.write("You entered invalid trignometric function");
+                 }
+             }
+             else if ((a != 1) && (b != 1) && (c != 0) && (d != 0)) {
+                 if (func == "sin") {
+                     document.write("The First Derivative of " + a + "(" + func + "( " + b + "x + " + c + " ) " + ")" + "^" + n + "+" + d + " is " + a * n * b + "(" + func + "(" + b + "x +" + c + "))^" + (n - 1) + " cos(" + b + "x +" + c + ")");
+                 }
+                 else if (func == "cos") {
+                     document.write("The First Derivative of " + a + "(" + func + "( " + b + "x + " + c + " ) " + ")" + "^" + n + "+" + d + " is -" + a * n * b + "(" + func + "(" + b + "x +" + c + "))^" + (n - 1) + " sin(" + b + "x +" + c + ")");
+                 }
+                 else if (func == "tan") {
+                     document.write("The First Derivative of " + a + "(" + func + "( " + b + "x + " + c + " ) " + ")" + "^" + n + "+" + d + " is " + a * n * b + "(" + func + "(" + b + "x +" + c + "))^" + (n - 1) + " (sec(" + b + "x +" + c + "))^2");
+                 }
+                 else if (func == "cot") {
+                     document.write("The First Derivative of " + a + "(" + func + "( " + b + "x + " + c + " ) " + ")" + "^" + n + "+" + d + " is -" + a * n * b + "(" + func + "(" + b + "x +" + c + "))^" + (n - 1) + " (csc(" + b + "x +" + c + "))^2");
+                 }
+                 else if (func == "sec") {
+                     document.write("The First Derivative of " + a + "(" + func + "( " + b + "x + " + c + " ) " + ")" + "^" + n + "+" + d + " is " + a * n * b + "(" + func + "(" + b + "x +" + c + "))^" + n + " *tan(" + b + "x +" + c + ")");
+                 }
+                 else if (func == "csc") {
+                     document.write("The First Derivative of " + a + "(" + func + "( " + b + "x + " + c + " ) " + ")" + "^" + n + "+" + d + " is -" + a * n * b + "(" + func + "(" + b + "x +" + c + "))^" + n + " *cot(" + b + "x +" + c + ")");
+                 }
+                 else {
+                     document.write("You entered invalid trignometric function");
+                 }
+             }
+             else {
+                 document.write("You entered invalid trignometric function");
+             }
+         }
+</script>
+      
+
+
+        
+

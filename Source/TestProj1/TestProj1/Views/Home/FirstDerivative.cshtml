@@ -1,0 +1,157 @@
+﻿@{
+    Page.Title = "First Derivative";
+ }
+@section head {
+<script type="text/javascript">
+
+   
+    // Function to Validate input//
+    function validateInput() {
+        var isValid = true;
+        document.getElementById('CoeffError').innerText = '';
+        document.getElementById('FunctionError').innerText = '';
+        document.getElementById('DegreeError').innerText = '';
+        document.getElementById('XcoeffError').innerText = '';
+        document.getElementById('ConstantError').innerText = '';
+        document.getElementById('XconstantError').innerText = '';
+
+        var a = document.getElementById("Coeff").value;
+        var func = document.getElementById("Function").value;
+        var b = document.getElementById("Xcoeff").value;
+        var c = document.getElementById("Xconstant").value;
+        var d = document.getElementById("Constant").value;
+        var n = document.getElementById("Degree").value;
+        
+        if (a.length == 0) {
+            document.getElementById("CoeffError").innerHTML = '<b>Enter a valid Coefficient (a value)!</b>';
+            isValid = false;
+            return isValid;
+        }
+        else if (func.length == 0) {
+            document.getElementById("FunctionError").innerHTML = '<b>Enter a valid trignometry function!</b>';
+            isValid = false;
+            return isValid;
+        }
+        else if (n.length == 0) {
+            document.getElementById("CoeffError").innerHTML = '<b>Enter a valid Degree (n value)!</b>';
+            isValid = false;
+            return isValid;
+        }
+        else if (b.length == 0) {
+            document.getElementById("CoeffError").innerHTML = '<b>Enter a valid X-coefficient (b value)!</b>';
+            isValid = false;
+            return isValid;
+        }
+        else if (d.length == 0) {
+            document.getElementById("CoeffError").innerHTML = '<b>Enter a valid Constant (d value)!</b>';
+            isValid = false;
+            return isValid;
+        }
+        else if (c.length == 0) {
+            document.getElementById("CoeffError").innerHTML = '<b>Enter a valid X-constant (c value)!</b>';
+            isValid = false;
+            return isValid;
+        }
+        else {
+            return TrigDerivative();
+        }
+    }
+
+    //Function to Evaluate First Derivative//
+    function TrigDerivative() {
+
+        var a = document.getElementById("Coeff").value;
+        var func = document.getElementById("Function").value;
+        var b = document.getElementById("Xcoeff").value;
+        var c = document.getElementById("Xconstant").value;
+        var d = document.getElementById("Constant").value;
+        var n = document.getElementById("Degree").value;
+
+        switch (n) {
+            case -1:
+                {
+                    return inverseFun(a, func, b, c, d, n);
+                }
+            case 0:
+                {
+                    return zerodegree(a, func, b, c, d, n);
+                }
+            case 1:
+                {
+                    return simpleFun(a, func, b, c, d, n);
+                }
+            default:
+                {
+                    return defaultFun(a, func, b, c, d, n);
+                }
+        }
+
+    }
+    function inverseFun(a, func, b, c, d, n) {
+        if ((a == 0) && (b == 0) && (c == 0) && (d == 0)) {
+        }
+        else if ((a == 0) && (b == 0) && (c == 0) && (d != 0)) {
+        }
+        else if ((a == 0) && (b == 0) && (c != 0) && (d == 0)) {
+        }
+    }
+    function zeroDegree(a, func, b, c, d, n) {
+    }
+    function simpleFun(a, func, b, c, d, n) {
+    }
+    function defaultFun(a, func, b, c, d, n) {
+
+    }
+
+</script>
+
+
+
+<p>
+    This page helps you find the first derivative of Trignometic Functions, by @ViewBag.Author
+</p>
+
+ <form action="" >
+
+        Enter the trignometic function as follows:<h5><b>Legend: a(sin (bx+c))^n + d</b></h5>
+        <br />
+        Enter the Coefficient (The value of a):
+        <br />
+        <input id="Coeff" name="Coeff" type="text" value="" />
+        <span id="CoeffError" class="error"></span>
+        <br />
+        <br />
+        Enter the function (Use sin for sine, cos for cosine, etc.): 
+        <br />      
+        <input id="Function" name="Function" type="text" value=""/>
+        <span id="FunctionError" class="error"></span>
+        <br />
+        <br />
+        Enter the degree (The value of n):
+        <br />
+        <input id="Degree" name="Degree" type="text" value="" />
+        <span id="DegreeError" class="error"></span>
+        <br />
+        <br />
+        Enter the Coefficient of Variable (The value of b):
+        <br />
+        <input id="Xcoeff" name="Xcoeff" type="text" value="" />
+        <span id="XcoeffError" class="error"></span>
+        <br />
+        <br />
+        Enter the Constant (The value of d):
+        <br />
+        <input id="Constant" name="Constant" type="text" value="" />
+        <span id="ConstantError" class="error"></span>
+        <br />
+        <br />
+        Enter the Constant next to X (The value of c):
+        <br />
+        <input id="Xconstant" name="Xconstant" type="text" value="" />
+        <span id="XconstantError" class="error"></span>
+        <br />
+        <br />
+        <input name="Submit" type="button" onclick="validateInput();" value = "Evaluate"/> 
+        <br /><br />
+        <textarea name="solution" id="Result" rows="5" cols="50" readonly="readonly"></textarea>
+</form>
