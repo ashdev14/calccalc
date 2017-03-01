@@ -36,22 +36,18 @@
                      <b>(</b> <input id="Xcoeff" name="Xcoeff" type="text" placeholder="'b'" size="5" /> <b>x</b> <b>+</b>
                          <input id="Xconstant" name="Xconstant" type="text" placeholder="'c'" size="5" /> <b>)</b> <b>)</b> <b>+</b>
                          <input id="Constant" name="Constant" type="text" placeholder="'d'" size="5" />
-                     <input name="evaluateBtn" id="evaluateBtn" type="button" value="Evaluate" />
+                     <input name="evaluateBtn" id="evaluateBtn" type="button" class="btn btn-sm btn-success" value="Evaluate" /> 
+                     <input name="clearBtn" id="clearBtn" type="button" class="btn btn-sm btn-danger" value="Clear" />
                  </td>
              </tr>
              <tr>
                  <td>
-                     <span id="CoeffError" class="error"></span>
-                     <span id="FunctionError" class="error"></span>
-                     <span id="DegreeError" class="error"></span>
-                     <span id="XcoeffError" class="error"></span>
-                     <span id="XconstantError" class="error"></span>
-                     <span id="ConstantError" class="error"></span>
+                     <div id="errorMsgSpan" class="error"></div>
                  </td>
              </tr>
              <tr>
                  <td>
-                     <textarea name="answers" id="answers" rows="10" cols="70" readonly="readonly" placeholder="Answer"></textarea>
+                     <textarea name="answers" id="answers" rows="10" cols="80" readonly="readonly" placeholder="Answer"></textarea>
                  </td>
              </tr>
          </tbody>
@@ -60,80 +56,86 @@
 <script type="text/javascript" src="~/Scripts/jquery-1.10.2.js"></script>
 <script type="text/javascript">
     var answerField;
+    function clearErrorMsg() {
+        $('#errorMsgSpan').text('');
+        answerField.val('');
+    }
+    function clearFields() {
+        clearErrorMsg();
+        $('#Coeff').val('');
+        $('#Function').val('');
+        $('#Xcoeff').val('');
+        $('#Xconstant').val('');
+        $('#Constant').val('');
+        $('#Degree').val('');
+    }
+    function validateInput() {
+        clearErrorMsg();
+
+        var a = $('#Coeff').val(),
+            func = $('#Function').val(),
+            b = $('#Xcoeff').val(),
+            c = $('#Xconstant').val(),
+            d = $('#Constant').val(),
+            n = $('#Degree').val(),
+            errorMessage = 'The following fields contains error:\n',
+            isValid = true;
+
+        if (a.length == 0) {
+            errorMessage += "  -- Enter a valid Coefficient (a value)!\n";
+            isValid = false;
+        }
+        if (func.length == 0) {
+            errorMessage += "  -- Enter a valid trignometry function!\n";
+            isValid = false;            
+        }
+        if (n.length == 0) {
+            errorMessage += "  -- Enter a valid Degree (n value)!\n";
+            isValid = false;            
+        }
+        if (b.length == 0) {
+            errorMessage += "  -- Enter a valid X-coefficient (b value)!\n";
+            isValid = false;            
+        }
+        if (c.length == 0) {
+            errorMessage += "  -- Enter a valid X-constant (c value)!\n";
+            isValid = false;            
+        }
+        if (d.length == 0) {
+            errorMessage += "  -- Enter a valid Constant (d value)!\n";
+            isValid = false;
+        }
+        if (isValid) {
+            if (a != 0) {
+                if (n == -1) {
+                    return inverseDerivative(a, func, b, c, d);
+                } else if (n == 0) {
+                    answerField.val("0");
+                } else {
+                    return simpleDerivative(a, func, b, c, d, n);
+                }
+            } else {
+                answerField.val("0");
+            }
+        } else {
+            alert(errorMessage);
+        }
+    }
     window.onload = function init() {
         if (!window.$) {
             window.setTimeout(init,25);
         }
         answerField = $('#answers');
+        $('#evaluateBtn').click(function () {
+            validateInput();
+        });
+        $('#clearBtn').click(function () {
+            clearFields();
+        });
     }
     
-     function validateInput() {
-         var isValid = true;
-         document.getElementById('CoeffError').innerText = '';
-         document.getElementById('FunctionError').innerText = '';
-         document.getElementById('DegreeError').innerText = '';
-         document.getElementById('XcoeffError').innerText = '';
-         document.getElementById('ConstantError').innerText = '';
-         document.getElementById('XconstantError').innerText = '';
-         answerField.innerText = '';
-         var a = $('#Coeff').val();
-         var func = $('#Function').val();
-         var b = $('#Xcoeff').val();
-         var c = $('#Xconstant').val();
-         var d = $('#Constant').val();
-         var n = $('#Degree').val();
-         if (a.length == 0) {
-             alert("Enter a valid Coefficient (a value)!");
-             isValid = false;
-             return isValid;
-         }
-         else if (func.length == 0) {
-             alert("Enter a valid trignometry function!");
-             isValid = false;
-             return isValid;
-         }
-         else if (n.length == 0) {
-             alert("Enter a valid Degree (n value)!");
-             isValid = false;
-             return isValid;
-         }
-         else if (b.length == 0) {
-             alert("Enter a valid X-coefficient (b value)!");
-             isValid = false;
-             return isValid;
-         }
-         else if (d.length == 0) {
-             alert("Enter a valid Constant (d value)!");
-             isValid = false;
-             return isValid;
-         }
-         else if (c.length == 0) {
-             alert("Enter a valid X-constant (c value)!");
-             isValid = false;
-             return isValid;
-         }
-         else {
-             if (a != 0) {
-                 if (n == -1) {
-                     return inverseDerivative(a, func, b, c, d);
-                 }
-                 else if (n == 0) {
-                     answerField.val("0");
-                 }
-                 else {
-                     return simpleDerivative(a, func, b, c, d, n);
-                 }
-             }
-             else {
-                 answerField.val("0");
-             }
-
-         }
-        
-     }
-     $('#evaluateBtn').click(function () {
-         validateInput();
-     });
+     
+     
      function inverseDerivative(a,func,b,c,d) {
 
             switch(func){
@@ -173,14 +175,7 @@
      }
      function simpleDerivative(a, func, b, c, d, n) {
 
-//         var a = document.getElementById("Coeff").value;
-//         var func = document.getElementById("Function").value;
-//         var b = document.getElementById("Xcoeff").value;
-//         var c = document.getElementById("Xconstant").value;
-//         var d = document.getElementById("Constant").value;
-//         var n = document.getElementById("Degree").value;
-         
-             if ((a == 1) && (b == 1) && (c == 0) && ( d == 0)) {
+            if ((a == 1) && (b == 1) && (c == 0) && (d == 0)) {
                  if (func == "sin") {
                      answerField.val("The First Derivative of " + func + "(x) is:\n cos(x)");
                  }
@@ -202,8 +197,7 @@
                  else {
                      answerField.val("You entered invalid trignometric function");
                  }
-             }
-             else if ((a == 1) && (b == 1) && (c != 0) && (d != 0)) {
+             }else if ((a == 1) && (b == 1) && (c != 0) && (d != 0)) {
                  if (func == "sin") {
                      answerField.val("The First Derivative of " + func + "( x + " + c + " ) + "  + d + " is:\n cos( x +" + c + ")") ;
                  }
@@ -225,8 +219,7 @@
                  else {
                      answerField.val("You entered invalid trignometric function");
                  }
-             }
-             else if ((a != 1) && (b == 1) && (c == 0) && (d == 0)) {
+             }else if ((a != 1) && (b == 1) && (c == 0) && (d == 0)) {
                  if (func == "sin") {
                      answerField.val("The First Derivative of " + a + func + "(x) is:\n " + a + " cos(x)");
                  }
